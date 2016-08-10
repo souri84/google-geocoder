@@ -45,6 +45,14 @@ class GoogleGeocoder {
     |
     */
     protected $param;
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Service Choice
+    |--------------------------------------------------------------------------
+    |
+    */
+    protected $service;
 
 
 
@@ -97,11 +105,12 @@ class GoogleGeocoder {
      *
      * @return string
      */
-    public function geocode($format, $param)
+    public function geocode($param, $format = 'json', $service = 'geocode')
     {
-        $this->format     = array_key_exists($format, $this->requestUrl) ? $format : 'json';
+        $this->format     = $format;
         $param['key']     = $this->applicationKey;
         $this->param      = http_build_query($param);
+        $this->service = $service;
 
         return $this->call();
     }
