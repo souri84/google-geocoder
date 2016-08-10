@@ -46,6 +46,14 @@ class GoogleGeocoder {
     */
     protected $param;
 
+    /*
+    |--------------------------------------------------------------------------
+    | Service Choice
+    |--------------------------------------------------------------------------
+    |
+    */
+    protected $service;
+
 
 
     /**
@@ -72,7 +80,7 @@ class GoogleGeocoder {
 
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER      => 1,
-            CURLOPT_URL                 => $this->requestUrl[$this->format].$this->param,
+            CURLOPT_URL                 => $this->requestUrl.$this->service.'/'.$this->format.'?'.$this->param,
             CURLOPT_SSL_VERIFYPEER      => false,
             CURLOPT_FAILONERROR         => true,
         ));
@@ -97,11 +105,12 @@ class GoogleGeocoder {
      *
      * @return string
      */
-    public function geocode($format, $param)
+    public function geocode($param, $service = 'geocode', $format = 'json')
     {
-        $this->format     = array_key_exists($format, $this->requestUrl) ? $format : 'json';
+        $this->format     = $format;
         $param['key']     = $this->applicationKey;
         $this->param      = http_build_query($param);
+        $this->service = $service;
 
         return $this->call();
     }
